@@ -1,0 +1,15 @@
+.table-icon  {
+    margin-right: 0.5rem;
+}
+
+.color-warning {
+    color: #ffc107;
+}
+
+.color-danger {
+    color: #dc3545;
+}
+
+.button {
+    cursor: pointer;
+}

@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  title: Posts API
+  description: Example Swagger API documentation for Posts
+  version: 1.0.0
+paths:
+  /react/v1/posts:
+    get:
+      summary: Get all posts
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+      security:
+        - CustomAuth: []
+    post:
+      summary: Create a new post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+      security:
+        - CustomAuth: []
+  /react/v1/posts/{id}:
+    get:
+      summary: Get a specific post
+      parameters:
+        - in: path
+          name: id
+          description: "The post's ID or slug"
+          schema:
+            oneOf:
+              - type: integer
+              - type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+      security:
+        - CustomAuth: []
+    put:
+      summary: Update an existing post
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+      security:
+        - CustomAuth: []
+    delete:
+      summary: Delete an existing post
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      security:
+        - CustomAuth: []
+security:
+  - CustomAuth: []
+components:
+  securitySchemes:
+    CustomAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        link:
+          type: string
+        title:
+          type: string
+        featured_image:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        content:
+          type: string
+        meta_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetaField'
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+    MetaField:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    PostInput:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        meta_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetaFieldInput'
+    MetaFieldInput:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
